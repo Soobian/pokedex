@@ -1,23 +1,32 @@
 import React from 'react'
 import styled from 'styled-components';
-import PokemonTypes from './PokemonType';
+import PokemonType from './PokemonType';
 
-function PokemonCard() {
+
+
+type PokemonCardProps = {
+    number: number;
+    name: string;
+    types: Array<string>;
+};
+
+function PokemonCard({number, name, types}: PokemonCardProps) {
     return (
         <Card>
             <Sprite>
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"/>
+                <img src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + number + ".png"}/>
             </Sprite>
             <Info>
                 <InfoBlock>
-                    <InfoText>N°1</InfoText>
+                    <InfoText>#{number}</InfoText>
                 </InfoBlock>
                 <InfoBlock>
-                    <NameText><text>Bulbazaur</text></NameText>
+                    <NameText><text>{name}</text></NameText>
                 </InfoBlock>
                 <TypeBlock>
-                    <PokemonTypes name="Grass" color="#9bcc50"/>
-                    <PokemonTypes name="Poison" color="#b97fc9"/>
+                    {types.map((type: string, index: number) => (
+                        <PokemonType name={type} key={index}/>
+                    ))}
                 </TypeBlock>
             </Info>
         </Card>
@@ -31,7 +40,6 @@ const Card = styled.div`
     flex-direction: column;
     align-items: stretch;
     flex: 1;
-    border: 1px solid red;
 `
 
 const Sprite = styled.div`

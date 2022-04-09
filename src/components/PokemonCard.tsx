@@ -55,6 +55,7 @@ const Sprite = styled.div`
 `
 
 const Info = styled.div`
+    padding: 70px 0 0 0;
     flex: 1;
     flex-direction: column;
     background: white;
@@ -66,7 +67,7 @@ const Info = styled.div`
 `
 
 const InfoBlock = styled.div`
-    padding: 10px;
+    padding: 5px;
 `
 
 const NameText = styled.div`
@@ -76,11 +77,12 @@ const NameText = styled.div`
 `
 
 const InfoText = styled.div`
-    flex: 1;
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
 `
 
 const TypeBlock = styled.div`
     display: flex;
-    justify-content: space-around;
-    padding: 20px;
+    justify-content: center;
 `

@@ -7,24 +7,21 @@ type PokemonCardProps = {
     number: number;
     name: string;
     types: Array<string>;
+    clickFunction: (number: number) => void;
 };
 
-function numberFormat (num: number, size: number): string {
+export function numberFormat (num: number, size: number): string {
     let s: string = num + "";
     while (s.length < size) s = "0" + s;
     s = "#" + s;
     return s;
 }
 
-function onClick(number: number): void {
-    console.log(number)
-}
-
-function PokemonCard({number, name, types}: PokemonCardProps) {
+function PokemonCard({number, name, types, clickFunction}: PokemonCardProps) {
     return (
-        <div className={styles.pokemoncard__card} onClick={() => onClick(number)}>
+        <div className={styles.pokemoncard__card} onClick={() => clickFunction(number)}>
             <div className={styles.pokemoncard__sprite}>
-                <img src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + number + ".png"}/>
+                <img alt={name} src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + number + ".png"}/>
             </div>
             <div className={styles.pokemoncard__info}>
                 <div className={styles.pokemoncard__infoblock}>

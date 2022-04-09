@@ -8,23 +8,22 @@
 .pokemoncard__sprite {
     display: flex;
     justify-content: center;
-    height: 70px;
+    height: 35px;
     position: relative;
 }
 
 .pokemoncard__sprite img {
     position: absolute;
     top: 0px;
-    width: 140px;
+    width: 70px;
 }
 
 .pokemoncard__info {
-    padding: 70px 20px 0 20px;
+    padding: 35px 20px 0 20px;
     flex: 1;
     flex-direction: column;
     background: white;
-    border-radius: 10px 10px 10px 10px;
-    color: black;
+    border-radius: 10px;
     -webkit-box-shadow: 0px 0px 11px -3px rgba(198, 198, 198, 1);
     -moz-box-shadow: 0px 0px 11px -3px rgba(198, 198, 198, 1);
     box-shadow: 0px 0px 11px -3px rgba(198, 198, 198, 1);
@@ -37,11 +36,12 @@
 .pokemoncard__number {
     font-size: 16px;
     text-align: center;
-    font-weight: bold;
+    font-weight: 900;
+    color: rgba(7, 23, 58, 0.4)
 }
 
 .pokemoncard__name {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 20px;
     text-align: center;
 }

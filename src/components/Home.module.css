@@ -1,12 +1,25 @@
 .home__container {
     background: #f6f8fc;
-    width: 80%;
+    width: 100%;
     min-width: 800px;
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    justify-content: center;
 }
 
 .home__content {
-    width: 100%;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+}
+
+.home__pokemonlist {
+    padding: 0 0.5em 0 0.5em;
+    flex: 3;
     display: grid;
     grid-gap: 1em;
+    overflow-y: scroll;
+    scrollbar-width: none;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
 }

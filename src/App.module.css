@@ -1,0 +1,6 @@
+.app__container {
+    background: #f6f8fc;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}

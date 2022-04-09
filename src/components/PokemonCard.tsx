@@ -9,6 +9,13 @@ type PokemonCardProps = {
     types: Array<string>;
 };
 
+function numberFormat (num: number, size: number): string {
+    let s: string = num + "";
+    while (s.length < size) s = "0" + s;
+    s = "#" + s;
+    return s;
+}
+
 function PokemonCard({number, name, types}: PokemonCardProps) {
     return (
         <div className={styles.pokemoncard__card}>
@@ -17,7 +24,7 @@ function PokemonCard({number, name, types}: PokemonCardProps) {
             </div>
             <div className={styles.pokemoncard__info}>
                 <div className={styles.pokemoncard__infoblock}>
-                    <div className={styles.pokemoncard__number}>#{number}</div>
+                    <div className={styles.pokemoncard__number}>{numberFormat(number, 3)}</div>
                 </div>
                 <div className={styles.pokemoncard__infoblock}>
                     <div className={styles.pokemoncard__name}><text>{name}</text></div>

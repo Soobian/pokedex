@@ -1,7 +1,6 @@
 import React from 'react'
-import styled from 'styled-components';
 import PokemonType from './PokemonType';
-
+import styles from './PokemonCard.module.css'
 
 
 type PokemonCardProps = {
@@ -12,77 +11,25 @@ type PokemonCardProps = {
 
 function PokemonCard({number, name, types}: PokemonCardProps) {
     return (
-        <Card>
-            <Sprite>
+        <div className={styles.pokemoncard__card}>
+            <div className={styles.pokemoncard__sprite}>
                 <img src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + number + ".png"}/>
-            </Sprite>
-            <Info>
-                <InfoBlock>
-                    <InfoText>#{number}</InfoText>
-                </InfoBlock>
-                <InfoBlock>
-                    <NameText><text>{name}</text></NameText>
-                </InfoBlock>
-                <TypeBlock>
+            </div>
+            <div className={styles.pokemoncard__info}>
+                <div className={styles.pokemoncard__infoblock}>
+                    <div className={styles.pokemoncard__number}>#{number}</div>
+                </div>
+                <div className={styles.pokemoncard__infoblock}>
+                    <div className={styles.pokemoncard__name}><text>{name}</text></div>
+                </div>
+                <div className={styles.pokemoncard__types}>
                     {types.map((type: string, index: number) => (
                         <PokemonType name={type} key={index}/>
                     ))}
-                </TypeBlock>
-            </Info>
-        </Card>
+                </div>
+            </div>
+        </div>
     )
 }
 
 export default PokemonCard
-
-const Card = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    flex: 1;
-`
-
-const Sprite = styled.div`
-    display: flex;
-    justify-content: center;
-    height: 70px;
-    position: relative;
-    img {
-        position: absolute;
-        top: 0px;
-        width: 140px;
-    }
-`
-
-const Info = styled.div`
-    padding: 70px 0 0 0;
-    flex: 1;
-    flex-direction: column;
-    background: white;
-    border-radius: 10px 10px 10px 10px;
-    color: black;
-    -webkit-box-shadow: 0px 0px 11px -3px rgba(198, 198, 198, 1);
-    -moz-box-shadow: 0px 0px 11px -3px rgba(198, 198, 198, 1);
-    box-shadow: 0px 0px 11px -3px rgba(198, 198, 198, 1);
-`
-
-const InfoBlock = styled.div`
-    padding: 5px;
-`
-
-const NameText = styled.div`
-    font-weight: bold;
-    font-size: 20px;
-    text-align: center;
-`
-
-const InfoText = styled.div`
-    font-size: 16px;
-    text-align: center;
-    font-weight: bold;
-`
-
-const TypeBlock = styled.div`
-    display: flex;
-    justify-content: center;
-`

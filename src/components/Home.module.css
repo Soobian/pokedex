@@ -1,0 +1,10 @@
+.home__container {
+    background: #f6f8fc;
+}
+
+.home__content {
+    display: grid;
+    grid-gap: 25px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    flex: 1;
+}

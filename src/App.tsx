@@ -1,21 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
 import Home from './components/Home'
-import './App.css';
+import styles from './App.module.css';
 
 function App() {
     return (
-        <Container>
+        <div className={styles.app__container}>
             <Home/>
-        </Container>
+        </div>
     );
 }
 
 export default App;
-
-const Container = styled.div`
-    background: #f6f8fc;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-`

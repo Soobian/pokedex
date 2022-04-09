@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styles from './Home.module.css'
 import PokemonCard from './PokemonCard';
 
 type Pokemon = {
@@ -23,30 +23,14 @@ const PokemonList: Array<Pokemon> = [
 
 function Home() {
     return (
-        <Container>
-            <Content>
+        <div className="home__container">
+            <div className={styles.home__content}>
                 {PokemonList.map((pokemon: Pokemon, index: number) => (
                     <PokemonCard key={index} number={pokemon.number} name={pokemon.name} types={pokemon.types}/>
                 ))}
-            </Content>
-        </Container>
+            </div>
+        </div>
     )
 }
 
 export default Home
-
-const Container = styled.div`
-    background: #f6f8fc;
-    width:80%;
-`
-
-const Content = styled.div`
-    display: grid;
-    grid-gap: 15px;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    flex: 1;
-`
-
-const Text = styled.div`
-    background: #616166;
-`

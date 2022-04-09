@@ -23,10 +23,15 @@ const PokemonList: Array<Pokemon> = [
 
 function Home() {
     return (
-        <div className="home__container">
+        <div className={styles.home__container}>
             <div className={styles.home__content}>
                 {PokemonList.map((pokemon: Pokemon, index: number) => (
-                    <PokemonCard key={index} number={pokemon.number} name={pokemon.name} types={pokemon.types}/>
+                    <PokemonCard 
+                        key={index} 
+                        number={pokemon.number} 
+                        name={pokemon.name} 
+                        types={pokemon.types}
+                    />
                 ))}
             </div>
         </div>

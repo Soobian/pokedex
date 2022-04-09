@@ -16,9 +16,13 @@ function numberFormat (num: number, size: number): string {
     return s;
 }
 
+function onClick(number: number): void {
+    console.log(number)
+}
+
 function PokemonCard({number, name, types}: PokemonCardProps) {
     return (
-        <div className={styles.pokemoncard__card}>
+        <div className={styles.pokemoncard__card} onClick={() => onClick(number)}>
             <div className={styles.pokemoncard__sprite}>
                 <img src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + number + ".png"}/>
             </div>

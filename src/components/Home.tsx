@@ -14,14 +14,15 @@ type Pokemon = {
 }
 
 function Home() {
+    
     function cardHandler(number: number): void {
         dispatch({type: ActionType.SHOW_POKEMON_DETAILS, payload: number});
     };
 
     const dispatch = useDispatch();
-    const { data, offset } = useSelector((state: RootState) => state.urls);
-    const { pokemons } = useSelector((state: RootState) => state.details);
-    const { selectedPokemonId } = useSelector((state: RootState) => state.pick)
+    const { url_loading, data, offset } = useSelector((state: RootState) => state.urls);
+    const { detail_loading, pokemons } = useSelector((state: RootState) => state.details);
+    const { pick_loading, selectedPokemonId } = useSelector((state: RootState) => state.pick)
     
     const selectPokemon = async () => {dispatch({type: ActionType.SHOW_POKEMON_DETAILS})};
 
@@ -140,39 +141,49 @@ function Home() {
 
     return (
         <div className={styles.home__container}>
-            <div className={styles.home__content}>
-                <div className={styles.home__main}>
-                    <div className={styles.home__pokemonlist}>
-                        {pokemons.map((pokemon, index: number) => {
-                            return <PokemonCard 
-                                key={index} 
-                                index={index}
-                                number={pokemon.id} 
-                                name={pokemon.name}
-                                types={parseTypes(pokemon.types)}
-                                clickFunction={cardHandler}
-                            />
-                        })}
-                    </div>
-                    <div className={styles.home__button_container}>
-                        <button className={styles.home__load_button} onClick={() => loadMorePokemons()}>Load more Pokemons!</button>
+            {url_loading || pick_loading || detail_loading ? (
+                <div className={styles.home__pokeball_container}>
+                    <div className={styles.home__pokeball}>
+                        <div className={styles.pokeball__button}>
+                            
+                        </div>
                     </div>
                 </div>
-                {console.log(selectedPokemonId)}
-                {selectedPokemonId !== null  &&
-                    <PokemonDetails 
-                        number={pokemons[selectedPokemonId].id} 
-                        name={pokemons[selectedPokemonId].name} 
-                        types={parseTypes(pokemons[selectedPokemonId].types)}
-                        abilities={parseAbiliies(pokemons[selectedPokemonId].abilities)}
-                        height={pokemons[selectedPokemonId].height} 
-                        weight={pokemons[selectedPokemonId].weight}
-                        genders={parseGenders(pokemons[selectedPokemonId].sprites)}
-                        exp={pokemons[selectedPokemonId].base_experience}
-                        stats={parseStats(pokemons[selectedPokemonId].stats)}
-                     />
-                }
-            </div>
+            ) : (
+                <div className={styles.home__content}>
+                    <div className={styles.home__main}>
+                        <div className={styles.home__pokemonlist}>
+                            {pokemons.map((pokemon, index: number) => {
+                                return <PokemonCard 
+                                    key={index} 
+                                    index={index}
+                                    number={pokemon.id} 
+                                    name={pokemon.name}
+                                    types={parseTypes(pokemon.types)}
+                                    clickFunction={cardHandler}
+                                />
+                            })}
+                        </div>
+                        <div className={styles.home__button_container}>
+                            <button className={styles.home__load_button} onClick={() => loadMorePokemons()}>Load more Pokemons!</button>
+                        </div>
+                    </div>
+                    {console.log(selectedPokemonId)}
+                    {selectedPokemonId !== null  &&
+                        <PokemonDetails 
+                            number={pokemons[selectedPokemonId].id} 
+                            name={pokemons[selectedPokemonId].name} 
+                            types={parseTypes(pokemons[selectedPokemonId].types)}
+                            abilities={parseAbiliies(pokemons[selectedPokemonId].abilities)}
+                            height={pokemons[selectedPokemonId].height} 
+                            weight={pokemons[selectedPokemonId].weight}
+                            genders={parseGenders(pokemons[selectedPokemonId].sprites)}
+                            exp={pokemons[selectedPokemonId].base_experience}
+                            stats={parseStats(pokemons[selectedPokemonId].stats)}
+                        />
+                    }
+                </div>
+            )}
         </div>
     )
 }

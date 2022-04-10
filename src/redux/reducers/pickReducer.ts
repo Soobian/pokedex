@@ -1,5 +1,5 @@
 export type PokemonState = {
-    loading: boolean;
+    pick_loading: boolean;
     error: string | null;
     selectedPokemonId: number | null;
 };
@@ -19,7 +19,7 @@ type Action =
     };
 
 let defaultState: PokemonState = {
-    loading: false,
+    pick_loading: false,
     error: null,
     selectedPokemonId: null,
 }
@@ -27,10 +27,10 @@ let defaultState: PokemonState = {
 let pickReducer = (state = defaultState, action: Action): PokemonState => {
     switch (action.type) {
         case ActionType.SHOW_POKEMON_DETAILS: {
-            return {loading: false, error: null, selectedPokemonId: action.payload};
+            return {pick_loading: false, error: null, selectedPokemonId: action.payload};
         }
         case ActionType.HIDE_POKEMON_DETAILS: {
-            return {loading: false, error: null, selectedPokemonId: null};
+            return {pick_loading: false, error: null, selectedPokemonId: null};
         }
         default:
             return state;

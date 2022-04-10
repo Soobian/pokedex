@@ -40,10 +40,6 @@ type StatsProps = {
     stats: Array<SingleStatProps>;
 }
 
-type GendersProps = {
-    genders: Array<boolean>;
-}
-
 function Ability({ability}: AbilityProps) {
     return (
         <div className={styles.ability__container} style={ability.hidden ? {border: '2px solid #ba3030'} : {border: '2px solid #3057ba'}}>
@@ -60,22 +56,6 @@ function PhysicalParameters({title, value, unit, divider}: PhysicalParametersPro
         <div className={styles.physicalparameters__container}>
             <div className={styles.physicalparameters__title}>{title.toUpperCase()}</div>
             <div className={styles.physicalparameters__value}>{value/divider} {unit}</div>
-        </div>
-    )
-}
-
-function Genders({genders}: GendersProps) {
-    return (
-        <div className={styles.physicalparameters__container}>
-            <div className={styles.physicalparameters__title}>{"gender".toUpperCase()}</div>
-            <div className={`${styles.genders__container} ${styles.physicalparameters__value}`}>
-                <div className={`${styles.genders__value} ${genders[1] ? styles.genders__female: ""}`}>
-                    <img alt="" src={require('../assets/icons8-female-30.png')}/>
-                </div>
-                <div className={`${styles.genders__value} ${genders[0] ? styles.genders__male: ""}`}>
-                    <img alt="" src={require('../assets/icons8-male-30.png')}/>
-                </div>
-            </div>
         </div>
     )
 }
@@ -156,8 +136,6 @@ function PokemonDetails({number, name, types, abilities, height, weight, genders
                     <div className={styles.pokemondetails__physicalparameters}>
                         <PhysicalParameters title={"height"} value={height} unit={"m"} divider={10}/>
                         <PhysicalParameters title={"weight"} value={weight} unit={"kg"} divider={10}/>
-                        <Genders genders={genders}/>
-                        <PhysicalParameters title={"base exp"} value={exp} unit={""} divider={1}/>
                     </div>
                     <Stats stats={stats}/>
                 </div>

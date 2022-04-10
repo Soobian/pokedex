@@ -4,7 +4,7 @@ type PokemonListAttrs = {
 }
 
 export type PokemonState = {
-    loading: boolean;
+    url_loading: boolean;
     error: string | null;
     data: Array<PokemonListAttrs>;
     offset: number;
@@ -32,7 +32,7 @@ type Action =
     };
 
 let defaultState: PokemonState = {
-    loading: false,
+    url_loading: false,
     error: null,
     data: [],
     offset: 0,
@@ -41,16 +41,16 @@ let defaultState: PokemonState = {
 let urlReducer = (state = defaultState, action: Action): PokemonState => {
     switch (action.type) {
         case ActionType.FETCH_POKEMONS: {
-            return {loading: true, error: null, data: [...state.data], offset: 20};
+            return {url_loading: true, error: null, data: [...state.data], offset: 20};
         }
         case ActionType.FETCH_POKEMONS_SUCCESS: {
-            return {loading: false, error: null, data: [...state.data, ...action.payload], offset: state.offset};
+            return {url_loading: false, error: null, data: [...state.data, ...action.payload], offset: state.offset};
         }
         case ActionType.FETCH_POKEMONS_ERROR: {
-            return {loading: false, error: action.payload, data: [...state.data], offset: state.offset};
+            return {url_loading: false, error: action.payload, data: [...state.data], offset: state.offset};
         }
         case ActionType.FETCH_MORE_POKEMONS: {
-            return {loading: false, error: null, data: [...state.data], offset: state.offset + 20};
+            return {url_loading: false, error: null, data: [...state.data], offset: state.offset + 20};
         }
         default:
             return state;

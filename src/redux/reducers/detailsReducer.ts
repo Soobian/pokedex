@@ -11,7 +11,7 @@ type PokemonAttrs = {
 };
   
 export type PokemonState = {
-    loading: boolean;
+    detail_loading: boolean;
     error: string | null;
     pokemons: Array<PokemonAttrs>;
 };
@@ -40,7 +40,7 @@ type Action =
     };
 
 let defaultState: PokemonState = {
-    loading: false,
+    detail_loading: false,
     error: null,
     pokemons: [],
 }
@@ -48,13 +48,13 @@ let defaultState: PokemonState = {
 let detailsReducer = (state = defaultState, action: Action): PokemonState => {
     switch (action.type) {
         case ActionType.FETCH_POKEMONS_DETAILS: {
-            return {loading: true, error: null, pokemons: [...state.pokemons]};
+            return {detail_loading: true, error: null, pokemons: [...state.pokemons]};
         }
         case ActionType.FETCH_POKEMONS_DETAILS_SUCCESS: {
-            return {loading: false, error: null, pokemons: [...defaultState.pokemons, ...action.payload]};
+            return {detail_loading: false, error: null, pokemons: [...defaultState.pokemons, ...action.payload]};
         }
         case ActionType.FETCH_POKEMONS_DETAILS_ERROR: {
-            return {loading: false, error: action.payload, pokemons: [...state.pokemons]};
+            return {detail_loading: false, error: action.payload, pokemons: [...state.pokemons]};
         }
         default:
             return state;

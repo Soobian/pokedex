@@ -19,15 +19,25 @@ type AbilityProps = {
     ability: AbilityType;
 }
 
-type InfoBlockProps = {
+type PhysicalParametersProps = {
     title: string;
     value: number;
     unit: string;
+    divider: number;
+}
+
+type SingleStatProps = {
+    name: string;
+    value: number;
+}
+
+type StatsProps = {
+    stats: Array<SingleStatProps>;
 }
 
 function Ability({ability}: AbilityProps) {
     return (
-        <div className={styles.ability__container} style={ability.hidden ? {border: '2px solid #3057ba'} : {border: '2px solid #ba3030'}}>
+        <div className={styles.ability__container} style={ability.hidden ? {border: '2px solid #ba3030'} : {border: '2px solid #3057ba'}}>
             {ability.name}
             {ability.hidden  && 
                 <img alt="" src={require('../assets/icons8-hide-24.png')}/>
@@ -36,11 +46,70 @@ function Ability({ability}: AbilityProps) {
     )
 }
 
-function InfoBlock({title, value, unit}: InfoBlockProps) {
+function PhysicalParameters({title, value, unit, divider}: PhysicalParametersProps) {
     return (
-        <div className={styles.infoblock__container}>
-            <div className={styles.infoblock__title}>{title.toUpperCase()}</div>
-            <div className={styles.infoblock__value}>{value/10} {unit}</div>
+        <div className={styles.physicalparameters__container}>
+            <div className={styles.physicalparameters__title}>{title.toUpperCase()}</div>
+            <div className={styles.physicalparameters__value}>{value/divider} {unit}</div>
+        </div>
+    )
+}
+
+function Genders() {
+    return (
+        <div className={styles.physicalparameters__container}>
+            <div className={styles.physicalparameters__title}>{"gender".toUpperCase()}</div>
+            <div className={`${styles.genders__container} ${styles.physicalparameters__value}`}>
+                <div className={styles.genders__value}>
+                    <img alt="" src={require('../assets/icons8-female-30.png')}/>
+                </div>
+                <div className={styles.genders__value}>
+                    <img alt="" src={require('../assets/icons8-male-30.png')}/>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function SingleStat({name, value}: SingleStatProps) {
+    const name_dict: { [name: string]: string } = {
+        "hp": "HP",
+        "attack": "ATK",
+        "defense": "DEF",
+        "special-attack": "SpA",
+        "special-defense": "SpD",
+        "speed": "SPD",
+        "total": "TOT",
+    }
+
+    const color_dict: { [name: string]: string} = {
+        "hp": "#df2140",
+        "attack": "#fe924c",
+        "defense": "#fedc53",
+        "special-attack": "#86ddff",
+        "special-defense": "#a8ef83",
+        "speed": "#fb93a7",
+        "total": "#7b96d8",
+    }
+
+    return (
+        <div className={styles.single_stat__container}>
+            <div className={styles.single_stat__title_container} style={{background: color_dict[name]}}>{name_dict[name]}</div>
+            <div className={styles.single_stat__value_container}>{value}</div>
+        </div>
+    )
+}
+
+function Stats({stats}: StatsProps) {
+    return (
+        <div className={styles.stats__container}>
+            <div className={styles.physicalparameters__title}>{"stats".toUpperCase()}</div>
+            <div className={styles.stats__values}>
+                {stats.map((stat: SingleStatProps, index: number) => (
+                    <SingleStat name={stat.name} value={stat.value}/>
+                ))}
+                <SingleStat name={"total"} value={stats.map(item => item.value).reduce((prev, curr) => prev + curr, 0)}/>
+            </div>
         </div>
     )
 }
@@ -54,10 +123,10 @@ function PokemonDetails({number, name, types, abilities}: PokemonDetailsProps) {
                 </div>
                 <div className={styles.pokemondetails__info__container}>
                 <div className={styles.pokemondetails__info__content}>
-                    <div className={styles.pokemoncard__number}>{numberFormat(number, 3)}</div>
+                    <div className={styles.pokemondetails__number}>{numberFormat(number, 3)}</div>
                 </div>
                 <div className={styles.pokemondetails__info__content}>
-                    <div className={styles.pokemoncard__name}><text>{name}</text></div>
+                    <div className={styles.pokemondetails__name}><text>{name}</text></div>
                 </div>
                 <div className={styles.pokemondetails__types}>
                     {types.map((type: string, index: number) => (
@@ -74,10 +143,20 @@ function PokemonDetails({number, name, types, abilities}: PokemonDetailsProps) {
                             />
                         ))}
                     </div>
-                    <div className={styles.pokemondetails__infoblocks}>
-                        <InfoBlock title={"height"} value={17} unit={"m"}/>
-                        <InfoBlock title={"weight"} value={845} unit={"kg"}/>
+                    <div className={styles.pokemondetails__physicalparameters}>
+                        <PhysicalParameters title={"height"} value={17} unit={"m"} divider={10}/>
+                        <PhysicalParameters title={"weight"} value={845} unit={"kg"} divider={10}/>
+                        <Genders />
+                        <PhysicalParameters title={"base exp"} value={239} unit={""} divider={1}/>
                     </div>
+                    <Stats stats={[
+                        {name: "hp", value: 84}, 
+                        {name: "attack", value: 84},
+                        {name: "defense", value: 84},
+                        {name: "special-attack", value: 84},
+                        {name: "special-defense", value: 84},
+                        {name: "speed", value: 84},
+                    ]}/>
                 </div>
             </div>
             </div>

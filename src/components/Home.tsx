@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import styles from './Home.module.css'
 import PokemonCard from './PokemonCard';
+import PokemonDetails from './PokemonDetails';
 import { ActionType } from '../redux/actions'
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from '../redux/reducers/index'
@@ -22,9 +23,32 @@ const PokemonList: Array<Pokemon> = [
     {number: 8, name: 'Wartortle', types: ["Water"]},
     {number: 9, name: 'Blastoise', types: ["Water"]},
     {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
+    {number: 10, name: 'Caterpie', types: ["Bug"]},
 ]
 
 function Home() {
+    const [clickedCard, setClickedCard] = useState< number | undefined>(undefined);
+
+    function cardHandler(number: number): void {
+        setClickedCard(number);
+    };
+
     const dispatch = useDispatch();
     const { data } = useSelector((state: RootState) => state.urls);
     const { pokemons } = useSelector((state: RootState) => state.details);
@@ -96,14 +120,25 @@ function Home() {
     return (
         <div className={styles.home__container}>
             <div className={styles.home__content}>
-                {PokemonList.map((pokemon: Pokemon, index: number) => (
-                    <PokemonCard 
-                        key={index} 
-                        number={pokemon.number} 
-                        name={pokemon.name} 
-                        types={pokemon.types}
-                    />
-                ))}
+                <div className={styles.home__pokemonlist}>
+                    {PokemonList.map((pokemon: Pokemon, index: number) => (
+                        <PokemonCard 
+                            key={index} 
+                            number={pokemon.number} 
+                            name={pokemon.name} 
+                            types={pokemon.types}
+                            clickFunction={cardHandler}
+                        />
+                    ))}
+                </div>
+                {clickedCard !== undefined &&
+                    <PokemonDetails 
+                        number={clickedCard} 
+                        name={PokemonList[clickedCard - 1].name} 
+                        types={PokemonList[clickedCard - 1].types}
+                        abilities={[{name: "Torrent", hidden: false}, {name: "Defiant", hidden: true}]}
+                     />
+                }
             </div>
         </div>
     )

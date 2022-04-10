@@ -4,6 +4,7 @@ import styles from './PokemonCard.module.css'
 
 
 type PokemonCardProps = {
+    index: number;
     number: number;
     name: string;
     types: Array<string>;
@@ -17,9 +18,9 @@ export function numberFormat (num: number, size: number): string {
     return s;
 }
 
-function PokemonCard({number, name, types, clickFunction}: PokemonCardProps) {
+function PokemonCard({index, number, name, types, clickFunction}: PokemonCardProps) {
     return (
-        <div className={styles.pokemoncard__card} onClick={() => clickFunction(number)}>
+        <div className={styles.pokemoncard__card} onClick={() => clickFunction(index)}>
             <div className={styles.pokemoncard__sprite}>
                 <img alt={name} src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + number + ".png"}/>
             </div>
@@ -28,7 +29,7 @@ function PokemonCard({number, name, types, clickFunction}: PokemonCardProps) {
                     <div className={styles.pokemoncard__number}>{numberFormat(number, 3)}</div>
                 </div>
                 <div className={styles.pokemoncard__infoblock}>
-                    <div className={styles.pokemoncard__name}><text>{name}</text></div>
+                    <div className={styles.pokemoncard__name}><p>{name[0].toUpperCase() + name.substring(1)}</p></div>
                 </div>
                 <div className={styles.pokemoncard__types}>
                     {types.map((type: string, index: number) => (

@@ -3,7 +3,7 @@ import styles from './PokemonDetails.module.css'
 import {numberFormat} from './PokemonCard'
 import PokemonType from './PokemonType'
 
-type AbilityType = {
+export type AbilityType = {
     name: string;
     hidden: boolean;
 }
@@ -13,6 +13,11 @@ type PokemonDetailsProps = {
     name: string;
     types: Array<string>;
     abilities: Array<AbilityType>;
+    height: number;
+    weight: number; 
+    genders: Array<boolean>;
+    exp: number;
+    stats: Array<SingleStatProps>
 }
 
 type AbilityProps = {
@@ -26,13 +31,17 @@ type PhysicalParametersProps = {
     divider: number;
 }
 
-type SingleStatProps = {
+export type SingleStatProps = {
     name: string;
     value: number;
 }
 
 type StatsProps = {
     stats: Array<SingleStatProps>;
+}
+
+type GendersProps = {
+    genders: Array<boolean>;
 }
 
 function Ability({ability}: AbilityProps) {
@@ -55,15 +64,15 @@ function PhysicalParameters({title, value, unit, divider}: PhysicalParametersPro
     )
 }
 
-function Genders() {
+function Genders({genders}: GendersProps) {
     return (
         <div className={styles.physicalparameters__container}>
             <div className={styles.physicalparameters__title}>{"gender".toUpperCase()}</div>
             <div className={`${styles.genders__container} ${styles.physicalparameters__value}`}>
-                <div className={styles.genders__value}>
+                <div className={`${styles.genders__value} ${genders[1] ? styles.genders__female: ""}`}>
                     <img alt="" src={require('../assets/icons8-female-30.png')}/>
                 </div>
-                <div className={styles.genders__value}>
+                <div className={`${styles.genders__value} ${genders[0] ? styles.genders__male: ""}`}>
                     <img alt="" src={require('../assets/icons8-male-30.png')}/>
                 </div>
             </div>
@@ -101,12 +110,13 @@ function SingleStat({name, value}: SingleStatProps) {
 }
 
 function Stats({stats}: StatsProps) {
+    console.log(stats)
     return (
         <div className={styles.stats__container}>
             <div className={styles.physicalparameters__title}>{"stats".toUpperCase()}</div>
             <div className={styles.stats__values}>
                 {stats.map((stat: SingleStatProps, index: number) => (
-                    <SingleStat name={stat.name} value={stat.value}/>
+                    <SingleStat key={index} name={stat.name} value={stat.value}/>
                 ))}
                 <SingleStat name={"total"} value={stats.map(item => item.value).reduce((prev, curr) => prev + curr, 0)}/>
             </div>
@@ -114,7 +124,7 @@ function Stats({stats}: StatsProps) {
     )
 }
 
-function PokemonDetails({number, name, types, abilities}: PokemonDetailsProps) {
+function PokemonDetails({number, name, types, abilities, height, weight, genders, exp, stats}: PokemonDetailsProps) {
     return (
         <div className={styles.pokemondetails__container}>
             <div className={styles.pokemondetails__content}>
@@ -126,7 +136,7 @@ function PokemonDetails({number, name, types, abilities}: PokemonDetailsProps) {
                     <div className={styles.pokemondetails__number}>{numberFormat(number, 3)}</div>
                 </div>
                 <div className={styles.pokemondetails__info__content}>
-                    <div className={styles.pokemondetails__name}><text>{name}</text></div>
+                    <div className={styles.pokemondetails__name}><p>{name[0].toUpperCase() + name.substring(1)}</p></div>
                 </div>
                 <div className={styles.pokemondetails__types}>
                     {types.map((type: string, index: number) => (
@@ -134,7 +144,7 @@ function PokemonDetails({number, name, types, abilities}: PokemonDetailsProps) {
                     ))}
                 </div>
                 <div className={styles.pokemondetails__info__content}>
-                    <text className={styles.pokemondetails__title__text}>ABLITIES</text>
+                    <p className={styles.pokemondetails__title__text}>ABLITIES</p>
                     <div className={styles.pokemondetails__abilities}>
                         {abilities.map((ability: AbilityType, index: number) => (
                             <Ability 
@@ -144,19 +154,12 @@ function PokemonDetails({number, name, types, abilities}: PokemonDetailsProps) {
                         ))}
                     </div>
                     <div className={styles.pokemondetails__physicalparameters}>
-                        <PhysicalParameters title={"height"} value={17} unit={"m"} divider={10}/>
-                        <PhysicalParameters title={"weight"} value={845} unit={"kg"} divider={10}/>
-                        <Genders />
-                        <PhysicalParameters title={"base exp"} value={239} unit={""} divider={1}/>
+                        <PhysicalParameters title={"height"} value={height} unit={"m"} divider={10}/>
+                        <PhysicalParameters title={"weight"} value={weight} unit={"kg"} divider={10}/>
+                        <Genders genders={genders}/>
+                        <PhysicalParameters title={"base exp"} value={exp} unit={""} divider={1}/>
                     </div>
-                    <Stats stats={[
-                        {name: "hp", value: 84}, 
-                        {name: "attack", value: 84},
-                        {name: "defense", value: 84},
-                        {name: "special-attack", value: 84},
-                        {name: "special-defense", value: 84},
-                        {name: "speed", value: 84},
-                    ]}/>
+                    <Stats stats={stats}/>
                 </div>
             </div>
             </div>

@@ -1,10 +1,12 @@
 .pokemontype__text {
     color: rgba(0, 0, 0, 0.5);
     font-weight: 900;
+    padding: 0;
+    margin: 0;
 }
 
 .pokemontype__block {
-    padding: 4px 20px 4px 20px; 
+    padding: 5px 20px 5px 20px; 
     border-radius: 5px;
     margin: 10px 5px 10px 5px;
     -webkit-box-shadow: 0px 0px 11px -3px rgba(198, 198, 198, 1);

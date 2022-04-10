@@ -7,16 +7,16 @@ type PokemonTypeProps = {
 }
 
 let pokemonTypes = new Map<string, Array<string>>([
-    ["Grass", ["#9bcc50"]],
-    ["Poison", ["#b97fc9"]],
-    ["Fire", ["#fd7d24"]],
-    ["Water", ["#4592c4"]],
-    ["Bug", ["#729f3f"]],
-    ["Flying", ["#30a7d7", "#bdb9b8"]],
-    ["Normal", ["#a4acaf"]],
-    ["Electric", ["#f1dc55"]],
-    ["Ground", ["#f7de3f", "#5b532f"]],
-    ["Fairy", ["#fdb9e9"]]
+    ["grass", ["#9bcc50"]],
+    ["poison", ["#b97fc9"]],
+    ["fire", ["#fd7d24"]],
+    ["water", ["#4592c4"]],
+    ["bug", ["#729f3f"]],
+    ["flying", ["#30a7d7", "#bdb9b8"]],
+    ["normal", ["#a4acaf"]],
+    ["electric", ["#f1dc55"]],
+    ["ground", ["#f7de3f", "#5b532f"]],
+    ["fairy", ["#fdb9e9"]]
 ]);
 
 function PokemonType({name}: PokemonTypeProps) {
@@ -24,21 +24,21 @@ function PokemonType({name}: PokemonTypeProps) {
     if (pokemonType?.length === 2){
         return (
             <div className={styles.pokemontype__block} style={{background: "linear-gradient(" + pokemonType[0] + " 50%, " + pokemonType[1] + " 50% 100%)"}}>
-                <text className={styles.pokemontype__text}>{name}</text>
+                <p className={styles.pokemontype__text}>{name}</p>
             </div>
         )
     }
     else if (pokemonType?.length === 1) {
         return (
             <div className={styles.pokemontype__block} style={{backgroundColor: pokemonType[0]}}>
-                <text className={styles.pokemontype__text}>{name}</text>
+                <p className={styles.pokemontype__text}>{name}</p>
             </div>
         )
     }
     else {
         return (
             <div className={styles.pokemontype__block} style={{backgroundColor: "#fff"}}>
-                <text className={styles.pokemontype__text}>{name}</text>
+                <p className={styles.pokemontype__text}>{name}</p>
             </div>
         )
     }

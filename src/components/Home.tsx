@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
-import styles from './Home.module.css'
+import React, { useEffect, useState } from 'react';
+import styles from './Home.module.css';
 import PokemonCard from './PokemonCard';
-import PokemonDetails from './PokemonDetails';
+import PokemonDetails, { AbilityType, SingleStatProps } from './PokemonDetails';
 import { ActionType } from '../redux/actions'
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from '../redux/reducers/index'
+import { RootState } from '../redux/reducers/index';
+import axios from 'axios';
 
 type Pokemon = {
     number: number;
@@ -12,59 +13,30 @@ type Pokemon = {
     types: Array<string>;
 }
 
-const PokemonList: Array<Pokemon> = [
-    {number: 1, name: 'Bulbasaur', types: ["Poison", "Grass"]},
-    {number: 2, name: 'Ivysaur', types: ["Poison", "Grass"]},
-    {number: 3, name: 'Venusaur', types: ["Poison", "Grass"]},
-    {number: 4, name: 'Charmander', types: ["Fire"]},
-    {number: 5, name: 'Charmeleon', types: ["Fire"]},
-    {number: 6, name: 'Charizard', types: ["Fire", "Flying"]},
-    {number: 7, name: 'Squirtle', types: ["Water"]},
-    {number: 8, name: 'Wartortle', types: ["Water"]},
-    {number: 9, name: 'Blastoise', types: ["Water"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-    {number: 10, name: 'Caterpie', types: ["Bug"]},
-]
-
 function Home() {
-    const [clickedCard, setClickedCard] = useState< number | undefined>(undefined);
-
     function cardHandler(number: number): void {
-        setClickedCard(number);
+        dispatch({type: ActionType.SHOW_POKEMON_DETAILS, payload: number});
     };
 
     const dispatch = useDispatch();
-    const { data } = useSelector((state: RootState) => state.urls);
+    const { data, offset } = useSelector((state: RootState) => state.urls);
     const { pokemons } = useSelector((state: RootState) => state.details);
     const { selectedPokemonId } = useSelector((state: RootState) => state.pick)
     
     const selectPokemon = async () => {dispatch({type: ActionType.SHOW_POKEMON_DETAILS})};
 
-    const fetchPokemonDetails = async (name: string) => {
+    const fetchPokemonDetails = async () => {
         dispatch({type: ActionType.FETCH_POKEMONS_DETAILS});
         try {
-            const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}/`);
-            const parsed = await res.json()
-            const pokemon_details = parsed;
+            let res_array: Array<any> = []
+            for (const pokemon of data) {
+                const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}/`);
+                const pokemon_details = res.data;
+                res_array.push(pokemon_details);
+            }
             dispatch({
                 type: ActionType.FETCH_POKEMONS_DETAILS_SUCCESS,
-                payload: pokemon_details,
+                payload: res_array,
             });
         } catch (error) {
             if (error instanceof Error) {
@@ -78,11 +50,11 @@ function Home() {
         }
     };
 
-    const fetchPokemons = async (offset: number, limit: number) => {
-        dispatch({type: ActionType.FETCH_POKEMONS});
+    const fetchPokemons = async (limit: number, action: ActionType) => {
+        dispatch({type: action});
         try {
-            const res = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`);
-            const parsed = (await res.json()) as {
+            const res = await axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`);
+            const parsed = (res.data) as {
                 results: [
                     {
                         name: string;
@@ -108,35 +80,96 @@ function Home() {
     };
 
     useEffect(() => {
-        fetchPokemons(0, 20);
+        fetchPokemons(20, ActionType.FETCH_POKEMONS);
     }, []);
 
+    function loadMorePokemons(): void {
+        fetchPokemons(20, ActionType.FETCH_MORE_POKEMONS);
+    };
+
     useEffect(() => {
-        for (var i = 0; i < data.length; i++) {
-            fetchPokemonDetails(data[i].name)
-        }
+        fetchPokemonDetails()
     }, [data])
+
+    function parseTypes(types: any): Array<string> {
+        let parsed_types: Array<string> = []
+        types.map(function (obj: any) {
+            parsed_types.push(obj.type.name)
+        })
+
+        return parsed_types;
+    }
+
+    function parseAbiliies(abilities: any): Array<AbilityType> {
+        let parsed_abilities: Array<AbilityType> = []
+        abilities.map(function (obj: any) {
+            let ability: AbilityType = {name: obj.ability.name.replaceAll('-', ' '), hidden: obj.is_hidden}
+            parsed_abilities.push(ability)
+        })
+
+        return parsed_abilities;
+    }
+
+    function parseStats(stats: any): Array<SingleStatProps> {
+        let parsed_stats: Array<SingleStatProps> = []
+        stats.map(function (obj: any) {
+            let stat: SingleStatProps = {name: obj.stat.name, value: obj.base_stat}
+            parsed_stats.push(stat)
+        })
+
+        return parsed_stats;
+    }
+
+    function parseGenders(images: any): Array<boolean> {
+        let parsed_genders: Array<boolean> = []
+        if(images.front_default != null) {
+            parsed_genders.push(true)
+        }
+        else {
+            parsed_genders.push(false)
+        }
+        if(images.front_female != null) {
+            parsed_genders.push(true)
+        }
+        else {
+            parsed_genders.push(false)
+        }
+
+        return parsed_genders;
+    }
 
     return (
         <div className={styles.home__container}>
             <div className={styles.home__content}>
-                <div className={styles.home__pokemonlist}>
-                    {PokemonList.map((pokemon: Pokemon, index: number) => (
-                        <PokemonCard 
-                            key={index} 
-                            number={pokemon.number} 
-                            name={pokemon.name} 
-                            types={pokemon.types}
-                            clickFunction={cardHandler}
-                        />
-                    ))}
+                <div className={styles.home__main}>
+                    <div className={styles.home__pokemonlist}>
+                        {pokemons.map((pokemon, index: number) => {
+                            return <PokemonCard 
+                                key={index} 
+                                index={index}
+                                number={pokemon.id} 
+                                name={pokemon.name}
+                                types={parseTypes(pokemon.types)}
+                                clickFunction={cardHandler}
+                            />
+                        })}
+                    </div>
+                    <div className={styles.home__button_container}>
+                        <button className={styles.home__load_button} onClick={() => loadMorePokemons()}>Load more Pokemons!</button>
+                    </div>
                 </div>
-                {clickedCard !== undefined &&
+                {console.log(selectedPokemonId)}
+                {selectedPokemonId !== null  &&
                     <PokemonDetails 
-                        number={clickedCard} 
-                        name={PokemonList[clickedCard - 1].name} 
-                        types={PokemonList[clickedCard - 1].types}
-                        abilities={[{name: "Torrent", hidden: false}, {name: "Defiant", hidden: true}]}
+                        number={pokemons[selectedPokemonId].id} 
+                        name={pokemons[selectedPokemonId].name} 
+                        types={parseTypes(pokemons[selectedPokemonId].types)}
+                        abilities={parseAbiliies(pokemons[selectedPokemonId].abilities)}
+                        height={pokemons[selectedPokemonId].height} 
+                        weight={pokemons[selectedPokemonId].weight}
+                        genders={parseGenders(pokemons[selectedPokemonId].sprites)}
+                        exp={pokemons[selectedPokemonId].base_experience}
+                        stats={parseStats(pokemons[selectedPokemonId].stats)}
                      />
                 }
             </div>

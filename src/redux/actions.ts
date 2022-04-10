@@ -7,5 +7,6 @@ export enum ActionType {
     HIDE_POKEMON_DETAILS = 'hide_pokemon_details',
     FETCH_POKEMONS_DETAILS = 'fetch_pokemons_details',
     FETCH_POKEMONS_DETAILS_SUCCESS = 'fetch_pokemons_details_success',
-    FETCH_POKEMONS_DETAILS_ERROR = 'fetch_pokemons_details_error'
+    FETCH_POKEMONS_DETAILS_ERROR = 'fetch_pokemons_details_error',
+    SEARCH_POKEMONS = 'search_pokemons',
 }

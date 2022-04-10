@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Home.module.css';
+import Header from './Header'
 import PokemonCard from './PokemonCard';
 import PokemonDetails, { AbilityType, SingleStatProps } from './PokemonDetails';
 import { ActionType } from '../redux/actions'
@@ -7,21 +8,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from '../redux/reducers/index';
 import axios from 'axios';
 
-type Pokemon = {
-    number: number;
-    name: string;
-    types: Array<string>;
-}
 
 function Home() {
-    
     function cardHandler(number: number): void {
         dispatch({type: ActionType.SHOW_POKEMON_DETAILS, payload: number});
     };
 
     const dispatch = useDispatch();
     const { url_loading, data, offset } = useSelector((state: RootState) => state.urls);
-    const { detail_loading, pokemons } = useSelector((state: RootState) => state.details);
+    const { detail_loading, filteredPokemons } = useSelector((state: RootState) => state.details);
     const { pick_loading, selectedPokemonId } = useSelector((state: RootState) => state.pick)
     
     const selectPokemon = async () => {dispatch({type: ActionType.SHOW_POKEMON_DETAILS})};
@@ -140,48 +135,50 @@ function Home() {
     }
 
     return (
-        <div className={styles.home__container}>
+        <div className={styles.home__main_container}>
             {url_loading || pick_loading || detail_loading ? (
                 <div className={styles.home__pokeball_container}>
                     <div className={styles.home__pokeball}>
                         <div className={styles.pokeball__button}>
-                            
+
                         </div>
                     </div>
                 </div>
             ) : (
-                <div className={styles.home__content}>
-                    <div className={styles.home__main}>
-                        <div className={styles.home__pokemonlist}>
-                            {pokemons.map((pokemon, index: number) => {
-                                return <PokemonCard 
-                                    key={index} 
-                                    index={index}
-                                    number={pokemon.id} 
-                                    name={pokemon.name}
-                                    types={parseTypes(pokemon.types)}
-                                    clickFunction={cardHandler}
-                                />
-                            })}
+                <div className={styles.home__container}>
+                    <Header/>
+                    <div className={styles.home__content}>
+                        <div className={styles.home__main}>
+                            <div className={styles.home__pokemonlist}>
+                                {filteredPokemons.map((pokemon, index: number) => {
+                                    return <PokemonCard 
+                                        key={index} 
+                                        index={index}
+                                        number={pokemon.id} 
+                                        name={pokemon.name}
+                                        types={parseTypes(pokemon.types)}
+                                        clickFunction={cardHandler}
+                                    />
+                                })}
+                            </div>
+                            <div className={styles.home__button_container}>
+                                <button className={styles.home__load_button} onClick={() => loadMorePokemons()}>Load more Pokemons!</button>
+                            </div>
                         </div>
-                        <div className={styles.home__button_container}>
-                            <button className={styles.home__load_button} onClick={() => loadMorePokemons()}>Load more Pokemons!</button>
-                        </div>
+                        {selectedPokemonId !== null  &&
+                            <PokemonDetails 
+                                number={filteredPokemons[selectedPokemonId].id} 
+                                name={filteredPokemons[selectedPokemonId].name} 
+                                types={parseTypes(filteredPokemons[selectedPokemonId].types)}
+                                abilities={parseAbiliies(filteredPokemons[selectedPokemonId].abilities)}
+                                height={filteredPokemons[selectedPokemonId].height} 
+                                weight={filteredPokemons[selectedPokemonId].weight}
+                                genders={parseGenders(filteredPokemons[selectedPokemonId].sprites)}
+                                exp={filteredPokemons[selectedPokemonId].base_experience}
+                                stats={parseStats(filteredPokemons[selectedPokemonId].stats)}
+                            />
+                        }
                     </div>
-                    {console.log(selectedPokemonId)}
-                    {selectedPokemonId !== null  &&
-                        <PokemonDetails 
-                            number={pokemons[selectedPokemonId].id} 
-                            name={pokemons[selectedPokemonId].name} 
-                            types={parseTypes(pokemons[selectedPokemonId].types)}
-                            abilities={parseAbiliies(pokemons[selectedPokemonId].abilities)}
-                            height={pokemons[selectedPokemonId].height} 
-                            weight={pokemons[selectedPokemonId].weight}
-                            genders={parseGenders(pokemons[selectedPokemonId].sprites)}
-                            exp={pokemons[selectedPokemonId].base_experience}
-                            stats={parseStats(pokemons[selectedPokemonId].stats)}
-                        />
-                    }
                 </div>
             )}
         </div>

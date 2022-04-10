@@ -27,20 +27,6 @@ let pokemonTypes = new Map<string, Array<string>>([
     ["water", ['#4592c4']],
 ])
 
-/*
-let pokemonTypes = new Map<string, Array<string>>([
-    ["grass", ["#9bcc50"]],
-    ["poison", ["#b97fc9"]],
-    ["fire", ["#fd7d24"]],
-    ["water", ["#4592c4"]],
-    ["bug", ["#729f3f"]],
-    ["flying", ["#30a7d7", "#bdb9b8"]],
-    ["normal", ["#a4acaf"]],
-    ["electric", ["#f1dc55"]],
-    ["ground", ["#f7de3f", "#5b532f"]],
-    ["fairy", ["#fdb9e9"]]
-]);
-*/
 function PokemonType({name}: PokemonTypeProps) {
     let pokemonType: Array<string> | undefined = pokemonTypes.get(name)
     if (pokemonType?.length === 2){

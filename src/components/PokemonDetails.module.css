@@ -28,7 +28,7 @@
     padding: 100px 20px 0 20px;
     flex: 1;
     flex-direction: column;
-    background: white;
+    background: #f6f8fc;
     border-radius: 10px;
     -webkit-box-shadow: 0px 0px 11px -3px rgba(198, 198, 198, 1);
     -moz-box-shadow: 0px 0px 11px -3px rgba(198, 198, 198, 1);
@@ -75,6 +75,7 @@
 .ability__container {
     display: flex;
     flex-direction: row;
+    background: white;
     justify-content: space-between;
     align-items: center;
     padding: 0.5em 1em 0.5em 1em;
@@ -116,7 +117,7 @@
     margin-top: 0.5em;
     border-radius: 1em;
     font-size: 15px;
-    background: #f6f8fc;
+    background: white;
     text-align: center;
 }
 
@@ -139,7 +140,7 @@
     flex-direction: column;
     border-radius: 18px;
     padding: 3px;
-    background: #f6f8fc;
+    background: white;
 }
 
 .single_stat__title_container {
